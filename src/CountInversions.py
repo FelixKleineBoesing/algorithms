@@ -1,20 +1,41 @@
 import os, sys
 
-def count_inversions(list: []):
+
+def load_file(file):
+    data = []
+    with open(file) as f:
+        lines = f.readlines()
+    for row in lines:
+        data += [int(row.replace("\n", ""))]
+    return data
+
+
+def count_inversions(arr: []):
+    assert type(arr) == list, "type of arr must be list!"
+    '''
+    :param arr: list containing integers
+    :return: number of inversions in given list
+    '''
     k = 0
-    n = len(list)
+    n = len(arr)
     for i in range(n):
-        for j in range(i + 1,n):
-            if list[i] > list[j]:
+        for j in range(i + 1, n):
+            if arr[i] > arr[j]:
                 k += 1
     return k
 
 
-def merge_sort_inversions(list: []):
-    if len(list) == 1:
-        return list, 0
+def merge_sort_inversions(arr: []):
+    '''
+    This function applies merge sort on the given list
+    :param arr: unsorted list
+    :return: sorted list and number of inversions
+    '''
+    if len(arr) == 1:
+        return arr, 0
     else:
-        a, b = list[:int(len(list)/2)], list[int(len(list)/2):]
+        # split array in halve
+        a, b = arr[:int(len(arr)/2)], arr[int(len(arr)/2):]
 
         a, a_inv = merge_sort_inversions(a)
         b, b_inv = merge_sort_inversions(b)
@@ -36,14 +57,7 @@ def merge_sort_inversions(list: []):
     return c, inv
 
 if __name__=="__main__":
-    data = []
-    with open("data/IntegerArray.txt") as f:
-        lines = f.readlines()
-    for row in lines:
-        data += [int(row.replace("\n", ""))]
-    print(data[0:6])
-    a = [1, 3, 4, 5, 2, 1, 4, 8]
-    print(count_inversions(a))
-    #print(count_inversions(data))
+    data = load_file("data/IntegerArray.txt")
+    print(count_inversions(data))
     sorted_array, inversions = merge_sort_inversions(data)
     print(inversions)
