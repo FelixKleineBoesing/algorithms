@@ -2,6 +2,11 @@ import copy
 
 
 def load_file(file):
+    '''
+    load file for counting
+    :param file: path to file
+    :return: list with integers
+    '''
     data = []
     with open(file) as f:
         lines = f.readlines()
@@ -22,42 +27,50 @@ def partition(arr, left, right):
     arr[index_i - 1], arr[left] = arr[left], arr[index_i - 1]
     return index_i - 1
 
-
-def create_pivot(arr, left, right, pivot_method):
-    pivot_index = left
+def create_pivot(arr, left, right, pivot):
     middle, median = None, None
     array_length = len(arr[left:right + 1])
-
-    if pivot_method in ("last", "end"):
+    if pivot == "end":
         pivot_index = right
-    elif pivot_method in ("median", "middle"):
+    elif pivot == "median":
         if array_length > 2:
             if array_length % 2 == 0:
-                middle = left + (int(round(array_length / 2.0))-1)
+                middle = left + (int(round(array_length / 2))-1)
             else:
-                middle = left + (int(array_length / 2.0))
-            list = [arr[left], arr[middle], arr[right]]
-            median = sorted(list)[1]
+                middle = left + (int(array_length / 2))
+            choice_list = [arr[left], arr[middle], arr[right]]
+            median = sorted(choice_list)[1]
         elif array_length == 2:
-            list = [arr[left], arr[left], arr[right]]
-            median = sorted(list)[1]
+            choice_list = [arr[left], arr[left], arr[right]]
+            median = sorted(choice_list)[1]
         pivot_index = arr.index(median)
-
+    else:
+        pivot_index = left
     arr[left], arr[pivot_index] = arr[pivot_index], arr[left]
     return
 
 
-def quick_sort(arr, left=0, right=None, pivot = "first"):
+def quick_sort(arr: list, left: int = None, right: int = None, pivot: str="first"):
+    assert type(arr) == list, "arr must be of type list!"
+    assert type(left) == int or left is None, "left must be of type int!"
+    assert type(right) == int or right is None, "right must be of type int!"
+    assert type(pivot) == str, "pivot must be of type str!"
     assert pivot in ["first", "last", "median"], "pivot method must be one of first, last or median"
-    # init counts
-    count_all = 0
-    count_lhs = 0
-    count_rhs = 0
-
-    if right is None:
-        right = len(arr) - 1
+    '''
+    quick sort given array
+    :param arr: unsorted list
+    :param left: index of left border
+    :param right: index of right border
+    :param pivot: choice of pivot element
+    :return: list with integers
+    '''
+    # init counts and borders
+    count_all, count_lhs, count_rhs = (0, 0, 0)
+    left = 0 if left is None else left
+    right = len(arr) - 1 if right is None else right
 
     if len(arr[left:(right+1)]) > 1:
+        # changes pivot per reference in list
         create_pivot(arr, left, right, pivot)
         count_all = len(arr[left:right])
         ix = partition(arr, left, right)
@@ -68,21 +81,13 @@ def quick_sort(arr, left=0, right=None, pivot = "first"):
     count_all += count_lhs + count_rhs
     return count_all
 
-def main():
-
-    file = "data/QuickSort.txt"
-    data = load_file(file)
-    # make deepcopy to avoid accidently changing list values
-    array_to_count1 = copy.deepcopy(data)
-    array_to_count2 = copy.deepcopy(data)
-    array_to_count3 = copy.deepcopy(data)
-
-    comparisons_pivot_first = quick_sort(array_to_count1, pivot="first")
+if __name__=="__main__":
+    data = load_file("data/QuickSort.txt")
+    # make deepcopy to avoid changing list values per reference
+    comparisons_pivot_first = quick_sort(copy.deepcopy(data), pivot="first")
     print(comparisons_pivot_first)
-    comparisons_pivot_last = quick_sort(array_to_count2, pivot = "last")
+    comparisons_pivot_last = quick_sort(copy.deepcopy(data), pivot="last")
     print(comparisons_pivot_last)
-    comparisons_pivot_median = quick_sort(array_to_count3 , pivot = "median")
+    comparisons_pivot_median = quick_sort(copy.deepcopy(data), pivot="median")
     print(comparisons_pivot_median)
 
-if __name__=="__main__":
-    main()

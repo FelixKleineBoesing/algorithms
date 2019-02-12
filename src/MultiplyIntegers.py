@@ -2,7 +2,7 @@ import math
 import clipboard
 
 def count_digits(n: int):
-    assert type(n) == int, "n must be of type integer!"
+    assert isinstance(n, int), "n must be of type integer!"
     '''
     this function measures the length of an integer
     :param n: int - integer for which length should be measured
@@ -18,8 +18,8 @@ def count_digits(n: int):
 
 
 def multiply_integers(str_one: str, str_two: str):
-    assert type(str_one) == str, "str_one must be of type str"
-    assert type(str_two) == str, "str_two must be of type str"
+    assert isinstance(str_one, str), "str_one must be of type str"
+    assert isinstance(str_two, str), "str_two must be of type str"
     '''
     :param str_one: str - integer as type str
     :param str_two: str - integer as type str

@@ -1,7 +1,9 @@
-import os, sys
-
-
 def load_file(file):
+    '''
+    load file for counting
+    :param file: path to file
+    :return: list with integers
+    '''
     data = []
     with open(file) as f:
         lines = f.readlines()
@@ -11,53 +13,53 @@ def load_file(file):
 
 
 def count_inversions(arr: []):
-    assert type(arr) == list, "type of arr must be list!"
+    assert isinstance(arr, list), "type of arr must be list!"
     '''
     :param arr: list containing integers
     :return: number of inversions in given list
     '''
-    k = 0
+    inv = 0
     n = len(arr)
     for i in range(n):
         for j in range(i + 1, n):
             if arr[i] > arr[j]:
-                k += 1
-    return k
+                inv += 1
+    return inv
 
 
-def merge_sort_inversions(arr: []):
+def merge_sort(arr: []):
+    assert isinstance(arr, list), "type of arr must be list!"
     '''
     This function applies merge sort on the given list
     :param arr: unsorted list
     :return: sorted list and number of inversions
     '''
-    if len(arr) == 1:
-        return arr, 0
-    else:
+    if len(arr) > 1:
         # split array in halve
-        a, b = arr[:int(len(arr)/2)], arr[int(len(arr)/2):]
+        arr_f, arr_s = arr[:int(len(arr)/2)], arr[int(len(arr)/2):]
 
-        a, a_inv = merge_sort_inversions(a)
-        b, b_inv = merge_sort_inversions(b)
+        arr_f, inv_f = merge_sort(arr_f)
+        arr_s, inv_s = merge_sort(arr_s)
 
-        c = []
-        i = 0
-        j = 0
-        inv = 0 + a_inv + b_inv
-    while i < len(a) and j < len(b):
-        if a[i] <= b[j]:
-            c += [a[i]]
-            i += 1
-        else:
-            c += [b[j]]
-            j += 1
-            inv += (len(a)-i)
-    c += a[i:]
-    c += b[j:]
-    return c, inv
+        arr_merged = []
+        i, j = (0, 0)
+        inv = 0 + inv_f + inv_s
+        while i < len(arr_f) and j < len(arr_s):
+            if arr_f[i] <= arr_s[j]:
+                arr_merged += [arr_f[i]]
+                i += 1
+            else:
+                arr_merged += [arr_s[j]]
+                j += 1
+                inv += (len(arr_s)-i)
+        arr_merged += arr_f[i:]
+        arr_merged += arr_s[j:]
+        return arr_merged, inv
+    else:
+        return arr, 0
 
 if __name__=="__main__":
     data = load_file("data/IntegerArray.txt")
     print(count_inversions(data))
-    sorted_array, inversions = merge_sort_inversions(data)
+    sorted_array, inversions = merge_sort(data)
     print(inversions)
