@@ -1,6 +1,7 @@
 import math
 import clipboard
 
+
 def count_digits(n: int):
     assert isinstance(n, int), "n must be of type integer!"
     '''
@@ -52,6 +53,7 @@ def multiply_integers(str_one: str, str_two: str):
     fourth_step = int(first_step * (10**d_one) + (third_step - (second_step + first_step)) * (10**int(d_one/2)) + \
                       second_step)
     return fourth_step
+
 
 if __name__=="__main__":
     x = "3141592653589793238462643383279502884197169399375105820974944592"

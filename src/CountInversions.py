@@ -1,4 +1,4 @@
-def load_file(file):
+def load_file(file: str):
     '''
     load file for counting
     :param file: path to file
@@ -58,8 +58,9 @@ def merge_sort(arr: []):
     else:
         return arr, 0
 
+
 if __name__=="__main__":
-    data = load_file("data/IntegerArray.txt")
+    data = load_file("../data/IntegerArray.txt")
     print(count_inversions(data))
     sorted_array, inversions = merge_sort(data)
     print(inversions)

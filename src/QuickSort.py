@@ -1,7 +1,7 @@
 import copy
 
 
-def load_file(file):
+def load_file(file: str):
     '''
     load file for counting
     :param file: path to file
@@ -15,39 +15,54 @@ def load_file(file):
     return data
 
 
-def partition(arr, left, right):
+def sort(arr, left, right):
+    '''
+
+    :param arr: unsorted array
+    :param left: left border
+    :param right: right border
+    :return:
+    '''
     pivot_element = arr[left]
-    index_i = left + 1
+    ix_i = left + 1
+    # iterate over given array and switch places if element of
+    for ix_j in range(ix_i, right + 1):
+        if arr[ix_j] < pivot_element:
+            arr[ix_j], arr[ix_i] = arr[ix_i], arr[ix_j]
+            ix_i += 1
 
-    for index_j in range(index_i, right + 1):
-        if arr[index_j] < pivot_element:
-            arr[index_j], arr[index_i] = arr[index_i], arr[index_j]
-            index_i += 1
+    arr[ix_i - 1], arr[left] = arr[left], arr[ix_i - 1]
+    return ix_i - 1
 
-    arr[index_i - 1], arr[left] = arr[left], arr[index_i - 1]
-    return index_i - 1
 
-def create_pivot(arr, left, right, pivot):
+def switch_pivot(arr, left, right, pivot):
+    '''
+    switch position of pivot element with left element
+    :param arr: unsorted array
+    :param left: left border
+    :param right: rigth border
+    :param pivot: pivot element
+    :return:
+    '''
     middle, median = None, None
-    array_length = len(arr[left:right + 1])
-    if pivot == "end":
-        pivot_index = right
-    elif pivot == "median":
-        if array_length > 2:
-            if array_length % 2 == 0:
-                middle = left + (int(round(array_length / 2))-1)
+    arr_len = len(arr[left:right + 1])
+    if pivot == "median":
+        if arr_len > 2:
+            if arr_len % 2 == 0:
+                middle = left + (int(round(arr_len / 2))-1)
             else:
-                middle = left + (int(array_length / 2))
-            choice_list = [arr[left], arr[middle], arr[right]]
+                middle = left + (int(arr_len / 2))
+            choice_list = (arr[left], arr[middle], arr[right])
             median = sorted(choice_list)[1]
-        elif array_length == 2:
-            choice_list = [arr[left], arr[left], arr[right]]
+        elif arr_len == 2:
+            choice_list = (arr[left], arr[left], arr[right])
             median = sorted(choice_list)[1]
-        pivot_index = arr.index(median)
+        ix = arr.index(median)
+    elif pivot == "first":
+        ix = right
     else:
-        pivot_index = left
-    arr[left], arr[pivot_index] = arr[pivot_index], arr[left]
-    return
+        ix = left
+    arr[left], arr[ix] = arr[ix], arr[left]
 
 
 def quick_sort(arr: list, left: int = None, right: int = None, pivot: str="first"):
@@ -71,18 +86,20 @@ def quick_sort(arr: list, left: int = None, right: int = None, pivot: str="first
 
     if len(arr[left:(right+1)]) > 1:
         # changes pivot per reference in list
-        create_pivot(arr, left, right, pivot)
+        switch_pivot(arr, left, right, pivot)
         count_all = len(arr[left:right])
-        ix = partition(arr, left, right)
-        if ix > left:
-            count_lhs = quick_sort(arr, left, ix - 1, pivot)
+        ix = sort(arr, left, right)
         if right > ix:
             count_rhs = quick_sort(arr, ix + 1, right, pivot)
+        if left < ix:
+            count_lhs = quick_sort(arr, left, ix - 1, pivot)
+
     count_all += count_lhs + count_rhs
     return count_all
 
+
 if __name__=="__main__":
-    data = load_file("data/QuickSort.txt")
+    data = load_file("../data/QuickSort.txt")
     # make deepcopy to avoid changing list values per reference
     comparisons_pivot_first = quick_sort(copy.deepcopy(data), pivot="first")
     print(comparisons_pivot_first)
