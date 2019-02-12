@@ -37,13 +37,15 @@ def merge_sort_inversions(list: []):
 
 if __name__=="__main__":
     data = []
-    with open("data/IntegerArray.txt") as f:
-        lines = f.readlines()
-    for row in lines:
-        data += [int(row.replace("\n", ""))]
-    print(data[0:6])
+    #with open("data/IntegerArray.txt") as f:
+    #    lines = f.readlines()
+    #for row in lines:
+    #    data += [int(row.replace("\n", ""))]
+    #print(data[0:6])
     a = [1, 3, 4, 5, 2, 1, 4, 8]
-    print(count_inversions(a))
+    b = [5, 3, 8, 9, 1, 7, 0, 2, 6, 4]
+
     #print(count_inversions(data))
-    sorted_array, inversions = merge_sort_inversions(data)
-    print(inversions)
+    #sorted_array, inversions = merge_sort_inversions(data)
+    sorted_array_test, inversions_test = merge_sort_inversions(b)
+    print(inversions_test)
