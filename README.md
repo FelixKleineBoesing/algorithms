@@ -22,6 +22,8 @@ MergeSort first halves the unsorted list, sorts these two individual lists and t
 
 **QuickSort**
 
+Quicksort selects an element from the list as the pivot element and divides the list to the left and right of the pivot element into smaller and larger elements. The algorithm does this in-place.
+https://de.wikipedia.org/wiki/Quicksort
 
 
 **Strongly-Connected-Components**
