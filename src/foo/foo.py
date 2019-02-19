@@ -1,6 +1,7 @@
-
+import os
+print(os.getcwd())
 from ctypes import cdll
-lib = cdll.LoadLibrary('./foo/libfoo.so')
+lib = cdll.LoadLibrary('src/foo/libfoo.so')
 
 class Foo:
     def __init__(self):
