@@ -1,0 +1,1 @@
+g++ -c -fPIC MultiplyIntegers.cpp -o MultiplyIntegers.o

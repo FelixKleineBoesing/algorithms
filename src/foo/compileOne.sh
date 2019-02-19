@@ -1,0 +1,1 @@
+g++ -c -fPIC foo.cpp -o foo.o

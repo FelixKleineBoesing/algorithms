@@ -1,0 +1,11 @@
+#Author: Felix KLeine Bösing
+version: "2"
+
+services:
+
+  algorithms:
+    build: .
+    image: algorithms
+    container_name: algorithms
+    volumes:
+    - ./src:/src/

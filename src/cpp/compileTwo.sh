@@ -1,0 +1,1 @@
+g++ -shared -Wl,-soname,libMultiplyIntegers.so -o libMultiplyIntegers.so  MultiplyIntegers.o
