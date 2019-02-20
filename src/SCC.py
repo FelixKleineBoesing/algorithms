@@ -55,7 +55,7 @@ class SCC:
                         vertices_completed += [a]
         self.completed_vertices = vertices_completed
 
-        # again, now in revers
+        # again, now in reverse
         vertices_visited = []
         for verc in reversed(self.completed_vertices):
             if verc in vertices_visited:
@@ -78,9 +78,9 @@ class SCC:
         return values.sort()[0:top]
 
 if __name__ == "__main__":
-    data = load_file("../data/SCC.txt")
+    data = load_file("data/SCC.txt")
     scc = SCC(data)
     scc.construct_graph()
     scc.calculate_scc()
-    scc.get_top_sizes(5)
+    print(scc.get_top_sizes(5))
     expected_sccs = [434821, 968, 459, 313, 211]
