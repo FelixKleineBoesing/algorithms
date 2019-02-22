@@ -4,6 +4,56 @@
 
 /* TODO implement own integer class */
 
+class BigInt {
+    std::string x;
+    public:
+        /* BigInt(std::string x = "0"); //constructor */
+        /* BigInt operator+(const std::string&)const; // + operators */
+        /* short int length(); //length of number */
+
+    BigInt operator+ (BigInt& y) {
+
+        short int len_a = this -> x.length();
+        short int len_b = y.length();
+        short int iter = std::max(len_a, len_b);
+        short int remainder = 0;
+        std::string result = "";
+        short int c;
+        std::string tmp;
+        std::string tmp_a;
+        std::string tmp_b;
+
+        for (short int i = 0; i < iter; i++) {
+            tmp_a = this->x[len_a-1-i];
+            tmp_b = y.x[len_b-1-i];
+            short int a = std::stoi(tmp_a);
+            short int b = std::stoi(tmp_b);
+            c = a + b + remainder;
+            if (c > 9) {
+                remainder = 1;
+                tmp = std::to_string(c);
+                result = tmp[tmp.length()-1] + result;
+            } else {
+                result = std::to_string(c) + result;
+                remainder = 0;
+            }
+        }
+        if (remainder == 1) {
+            result = "1" + result;
+        }
+        return BigInt(result);
+    };
+
+    short int length () {
+        short int result;
+        return result = x.length();
+    };
+
+    BigInt(std::string x) {
+    x = x;
+    };
+};
+
     int multiply_integers_cpp(long long int int_one, long long int int_two){
 
         /* init result */

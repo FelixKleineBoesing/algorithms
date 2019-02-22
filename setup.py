@@ -1,4 +1,4 @@
-from setuptools import setup
+from setuptools import setup, Extension
 from setuptools import find_packages
 
 
@@ -11,4 +11,5 @@ setup(name='algorithms',
       packages=find_packages(),
       install_requires=['numpy'],
       include_package_data=True,
-      zip_safe=False)
+      zip_safe=False,
+      ext_modules=[Extension("mul_int", ["algorithms/cpp/MultiplyIntegers.cpp"])])

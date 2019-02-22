@@ -1,21 +1,13 @@
 import math
 import clipboard
+from ctypes import cdll
+
+lib = cdll.LoadLibrary("algorithms/cpp/libMultiplyIntegers.so")
 
 
-def count_digits(n: int):
-    assert isinstance(n, int), "n must be of type integer!"
-    '''
-    this function measures the length of an integer
-    :param n: int - integer for which length should be measured
-    :return: int - number of digits
-    '''
-    if n > 0:
-        digits = int(math.log10(n)) + 1
-    elif n == 0:
-        digits = 1
-    else:
-        digits = int(math.log10(-n)) + 2
-    return digits
+def multiply_integers_cpp(int_one: int, int_two: int):
+    raise NotImplementedError
+    return lib.multiply_integers_cpp_bar(int_one, int_two)
 
 
 def multiply_integers(str_one: str, str_two: str):
@@ -53,9 +45,6 @@ def multiply_integers(str_one: str, str_two: str):
     fourth_step = int(first_step * (10**d_one) + (third_step - (second_step + first_step)) * (10**int(d_one/2)) + \
                       second_step)
     return fourth_step
-
-
-
 
 
 if __name__=="__main__":

@@ -1,0 +1,1 @@
+g++ -shared -Wl,-install_name,libMultiplyIntegers.so -o ../algorithms/cpp/libMultiplyIntegers.so  ../algorithms/cpp/MultiplyIntegers.o

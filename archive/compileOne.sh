@@ -1,0 +1,1 @@
+g++ -c -fPIC ../algorithms/cpp/MultiplyIntegers.cpp -o ../algorithms/cpp/MultiplyIntegers.o
