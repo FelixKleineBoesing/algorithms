@@ -54,15 +54,12 @@ class BigInt {
     };
 };
 
-    int multiply_integers_cpp(long long int int_one, long long int int_two){
+    int multiply_integers_cpp(std::string int_one, std::string int_two){
 
         /* init result */
-        long long int product;
+        std::string product;
         std::cout << int_one << std::endl;
         std::cout << int_two << std::endl;
-
-        std::string str_one = std::to_string(int_one);
-        std::string str_two = std::to_string(int_two);
 
         short int d_one = str_one.length();
         short int d_two = str_two.length();
@@ -101,11 +98,11 @@ class BigInt {
             d_two = str_two.length();
 
             /* divide integers in equal parts*/
-            long long int a = std::stoi(str_one.substr(0, d_one / 2));
-            long long int b = std::stoi(str_one.substr(d_one / 2, d_one / 2));
+            BigInt a = std::stoi(str_one.substr(0, d_one / 2));
+            BigInt b = std::stoi(str_one.substr(d_one / 2, d_one / 2));
 
-            long long int c = std::stoi(str_two.substr(0, d_two / 2));
-            long long int d = std::stoi(str_two.substr(d_two / 2, d_two / 2));
+            BigInt c = std::stoi(str_two.substr(0, d_two / 2));
+            BigInt d = std::stoi(str_two.substr(d_two / 2, d_two / 2));
 
             std::cout << a << std::endl;
             std::cout << b << std::endl;
@@ -113,9 +110,9 @@ class BigInt {
             std::cout << d << std::endl;
 
             /*  apply the four steps of karazuba algorithm*/
-            long long int first_step = multiply_integers_cpp(a, c);
-            long long int second_step = multiply_integers_cpp(b, d);
-            long long int third_step = multiply_integers_cpp(a+b, c+d);
+            BigInt first_step = multiply_integers_cpp(a, c);
+            BigInt second_step = multiply_integers_cpp(b, d);
+            BigInt third_step = multiply_integers_cpp(a+b, c+d);
             product = first_step * pow(10, d_one) + (third_step - (second_step + first_step)) * pow(10, d_one / 2) + second_step;
          }
         return product;
@@ -123,7 +120,7 @@ class BigInt {
 
 #include <stdint.h>
 extern "C" {
-    int32_t multiply_integers_cpp_bar(int32_t int_one,int32_t int_two) {
+    char * str multiply_integers_cpp_bar(char * str int_one, char * str int_two) {
         return multiply_integers_cpp(int_one, int_two);
     }
 }

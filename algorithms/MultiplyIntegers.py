@@ -6,7 +6,6 @@ lib = cdll.LoadLibrary("algorithms/cpp/libMultiplyIntegers.so")
 
 
 def multiply_integers_cpp(int_one: int, int_two: int):
-    raise NotImplementedError
     return lib.multiply_integers_cpp_bar(int_one, int_two)
 
 
@@ -50,7 +49,8 @@ def multiply_integers(str_one: str, str_two: str):
 if __name__=="__main__":
     x = "3141592653589793238462643383279502884197169399375105820974944592"
     y = "2718281828459045235360287471352662497757247093699959574966967627"
-    a = multiply_integers(x, y)
-    print(int(a))
-    print(int(x)*int(y))
-    clipboard.copy(a)
+    #a = multiply_integers(x, y)
+    a = multiply_integers_cpp(100000000, 1000000000)
+    print(a)
+    #print(int(x)*int(y))
+    #clipboard.copy(a)
