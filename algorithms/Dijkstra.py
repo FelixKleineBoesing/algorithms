@@ -57,7 +57,6 @@ class Dijkstra:
 if __name__ == '__main__':
     data = load_file("../data/dijkstraData.txt")
     dijkstra = Dijkstra(data)
-    dijkstra.construct_graph()
     shortest_paths = dijkstra.calculate_dijkstra_shortest_path()
     vertices = [7, 37, 59, 82, 99, 115, 133, 165, 188, 197]
     distances = []
