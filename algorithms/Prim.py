@@ -1,3 +1,5 @@
+import numpy as np
+
 def load_file(file: str):
     '''
     load file for counting
@@ -28,19 +30,16 @@ class Prim:
 
     def calculate_minimum_spanning_tree(self):
         unvisited = set(self.graph.keys())
-        visited = set()
-        X = set()
         # begin with vertex one
-        visited.add(1)
-        X.add((1, 0))
+        values = {vtx: np.Inf for vtx in unvisited}
+        parents = {vtx: 0 for vtx in unvisited}
+        values[0] = 0
         while len(unvisited) > 0:
             vtx = self._extract_min(X)
-            self.cost += vtx[1]
-            unvisited.remove(vtx[0])
-            visited.add(vtx[0])
             for edge in self.graph[vtx[0]].keys():
-                if edge in unvisited and self.graph[vtx[0]][edge]:
-                    X.add((edge, self.graph[vtx[0]][edge]))
+                if edge in unvisited and self.graph[vtx][edge] < values[edge]:
+                    parents[edge] = vtx[0]
+                    values[edge] =
 
     def _extract_min(self, edge_cost: set):
         for ix, a in enumerate(edge_cost):
@@ -49,7 +48,7 @@ class Prim:
             else:
                 if a[1] < min[1]:
                     min = a
-        return min
+        return edge_cost.remove(min)
 
 
 if __name__ == "__main__":
