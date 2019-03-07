@@ -24,6 +24,7 @@ def load_file(file: str):
 
 
 class Prim:
+
     def __init__(self, graph: dict):
         self.graph = graph
         self.cost = 0
@@ -31,24 +32,42 @@ class Prim:
     def calculate_minimum_spanning_tree(self):
         unvisited = set(self.graph.keys())
         # begin with vertex one
-        values = {vtx: np.Inf for vtx in unvisited}
-        parents = {vtx: 0 for vtx in unvisited}
-        values[0] = 0
+        visited = set()
+        queue = set()
+        visited.add((1,0))
+        queue.add((1,0))
         while len(unvisited) > 0:
-            vtx = self._extract_min(X)
+            vtx = extract_min(queue)
+            self.cost += vtx[1]
+            unvisited.remove(vtx[0])
+            visited.add(vtx[0])
             for edge in self.graph[vtx[0]].keys():
-                if edge in unvisited and self.graph[vtx][edge] < values[edge]:
-                    parents[edge] = vtx[0]
-                    values[edge] =
+                if edge in unvisited:
+                    update_set(queue, edge)
 
-    def _extract_min(self, edge_cost: set):
-        for ix, a in enumerate(edge_cost):
-            if ix == 0:
+
+def extract_min(edge_cost: set):
+    for ix, a in enumerate(edge_cost):
+        if ix == 0:
+            min = a
+        else:
+            if a[1] < min[1]:
                 min = a
-            else:
-                if a[1] < min[1]:
-                    min = a
-        return edge_cost.remove(min)
+    edge_cost.remove(min)
+    return min
+
+
+def update_set(edge_cost: set, edge: tuple):
+    found = False
+    for tup in edge_cost:
+        if tup[0] == edge[0]:
+            found = True
+            if tup[1] < edge[1]:
+                edge_cost.remove(tup)
+                edge_cost.add(edge)
+
+    if not found:
+        edge_cost.add(edge)
 
 
 if __name__ == "__main__":

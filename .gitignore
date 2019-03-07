@@ -1,3 +1,4 @@
 .idea
 docs/
 data
+algorithms/__pycache__
