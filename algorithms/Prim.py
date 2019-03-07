@@ -34,7 +34,7 @@ class Prim:
         # begin with vertex one
         visited = set()
         queue = set()
-        visited.add((1,0))
+        visited.add(1)
         queue.add((1,0))
         while len(unvisited) > 0:
             vtx = extract_min(queue)
@@ -43,7 +43,7 @@ class Prim:
             visited.add(vtx[0])
             for edge in self.graph[vtx[0]].keys():
                 if edge in unvisited:
-                    update_set(queue, edge)
+                    update_set(queue, (edge, self.graph[vtx[0]][edge]))
 
 
 def extract_min(edge_cost: set):
@@ -62,7 +62,7 @@ def update_set(edge_cost: set, edge: tuple):
     for tup in edge_cost:
         if tup[0] == edge[0]:
             found = True
-            if tup[1] < edge[1]:
+            if tup[1] > edge[1]:
                 edge_cost.remove(tup)
                 edge_cost.add(edge)
 
@@ -71,7 +71,8 @@ def update_set(edge_cost: set, edge: tuple):
 
 
 if __name__ == "__main__":
-    data = load_file("../data/edges.txt")
+    data = load_file("data/edges.txt")
     prim = Prim(data)
     prim.calculate_minimum_spanning_tree()
+    print(prim.cost)
     print("Bla")
