@@ -1,5 +1,3 @@
-import numpy as np
-
 def load_file(file: str):
     '''
     load file for counting
