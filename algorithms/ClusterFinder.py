@@ -1,98 +1,91 @@
 from operator import attrgetter
 
 
-def load_file(file: str):
-    '''
-    load file for counting
-    :param file: path to file
-    :return: list with integers
-    '''
-    data = {}
-    with open(file) as f:
-        lines = f.readlines()
-    del lines[0]
-    for row in lines:
-        from_, to_, weight  = (int(val) for val in row.split())
-        if from_ not in data.keys():
-            data[from_] = {to_: weight}
-        else:
-            data[from_].update({to_: weight})
-        if to_ not in data.keys():
-            data[to_] = {from_: weight}
-        else:
-            data[to_].update({from_: weight})
-    return data
+class Graph:
+    def __init__(self):
+        self.graph = None
+        self.edges = None
+        self.vertices = None
+
+    def read_from_file(self, path: str):
+        '''
+        load file for counting
+        :param file: path to file
+        :return: list with integers
+        '''
+        data = {}
+        self.edges = []
+        with open(path) as f:
+            lines = f.readlines()
+        del lines[0]
+        for row in lines:
+            from_, to_, weight = (int(val) for val in row.split())
+            self.edges += [(from_, to_, weight)]
+            if from_ not in data.keys():
+                data[from_] = {to_: weight}
+            else:
+                data[from_].update({to_: weight})
+            if to_ not in data.keys():
+                data[to_] = {from_: weight}
+            else:
+                data[to_].update({from_: weight})
+        self.graph = data
+        self.vertices = list(self.graph.keys())
 
 
-class Kruskal:
+class KruskalClusterDetector:
 
-    def  __init__(self, graph: dict):
-        assert type(graph) == dict
+    def  __init__(self, graph: Graph):
+        assert type(graph) == Graph
         self.graph = graph
 
-    def get_mst(self):
-        pass
+    def get_clusters(self, number_cluster: int):
+        #sort by costs
+        sorted_edges = sorted(self.graph.edges, key=lambda x: x[2])
+        union_finder = UnionFinder(self.graph.vertices)
+        searching = True
+        i = 0
+        while searching and i < len(sorted_edges)-1:
+            edge = sorted_edges[i]
+            i += 1
+            # if number of clusters not reached and there are still unconnected  vertices
+            if number_cluster != union_finder.number_unions and not union_finder.connected(edge[0], edge[1]):
+                union_finder.union(edge[0], edge[1])
+            if number_cluster == union_finder.number_unions and not union_finder.connected(edge[0], edge[1]):
+                searching = False
 
-
-class ClusterFinder:
-
-    def __init__(self, input_file):
-        with open(input_file, 'r') as file:
-            self._num_vertices = int(file.readline())
-            self._edges = []
-            self._unique_vtx = set()
-            for line in file:
-                edge_from, edge_to, cost = line.split()
-                self._edges.append(Edge(int(edge_from), int(edge_to), int(cost)))
-                self._unique_vtx.add(int(edge_from))
-                self._unique_vtx.add(int(edge_to))
-
-    def find_clusters(self, count):
-        sorted_edges = sorted(self._edges, key=attrgetter("cost"))
-        uf = UnionFinder(list(self._unique_vtx))
-        for index, edge in enumerate(sorted_edges):
-            if count != uf.number_items and not uf.connected(edge.from_vertex, edge.to_vertex):
-                uf.union(edge.from_vertex, edge.to_vertex)
-            if uf.number_items == count and not uf.connected(edge.from_vertex, edge.to_vertex):
-                return edge.cost
-
-
-class Edge:
-    def __init__(self, edge_from, edge_to, cost):
-        self.from_vertex = edge_from
-        self.to_vertex = edge_to
-        self.cost = cost
+        return edge[2]
 
 
 class UnionFinder:
 
     def __init__(self, ids_vtx: list):
         '''
-        IMplements special data sctructure union find
+        Implements special data sctructure union find
         :param number_items: number of items to hold. MUst be larger than One.
         '''
         assert type(ids_vtx) == list
         assert len(ids_vtx) > 1
         self.ids_vtx = ids_vtx
-        self.number_items = len(ids_vtx)
+        self.number_unions = len(ids_vtx)
         # original number items
-        self._number_items = self.number_items
+        self._number_item = self.number_unions
         self._union_find = {vtx : (vtx, 0) for vtx in self.ids_vtx}
 
-    def find(self, item):
+    def find(self, vtx):
         """
-        find parent of item
-        :param item:
+        find parent of vertex
+        :param vtx:
         :return: the parent
         """
-        assert item in self.ids_vtx
-        parent = self._get_parent(item)
-        prev = item
-        while self._union_find[parent][0] != parent:
-            self._union_find[prev] = self._union_find[parent][0], self._union_find[prev][1]
-            prev = parent
-            parent = self._get_parent(parent)
-        return parent
+        assert vtx in self.ids_vtx
+        parent_vtx = self._union_find[vtx][0]
+        previous_vtx = vtx
+        while self._union_find[parent_vtx][0] != parent_vtx:
+            self._union_find[previous_vtx] = (self._union_find[parent_vtx][0], self._union_find[previous_vtx][1])
+            previous_vtx = parent_vtx
+            parent_vtx = self._union_find[parent_vtx][0]
+        return parent_vtx
 
     def connected(self, vtx_one: int, vtx_two: int):
         """
@@ -105,41 +98,36 @@ class UnionFinder:
         assert vtx_one in self.ids_vtx
         return self.find(vtx_one) == self.find(vtx_two)
 
-    def union(self, first, second):
+    def union(self, vtx_one: int, vtx_two: int):
         """
-        Unions <first> with <second> item
-        :param first: the first item to be connected
-        :param second: the second item to be connected
+        union both supplied vertices
+        :param vtx_one: fist vertex
+        :param vtx_two: second vertex
         :return: None
         """
-        if not (1, 1) <= (first, second) <= (self._number_items, self._number_items):
-            raise ValueError("Items {}, {} should be in the range [1..{}]".format(first, second, self._number_items))
-        first_parent = self.find(first)
-        second_parent = self.find(second)
-        if first_parent == second_parent:
-            return
-        self.number_items -= 1
-        first_rank = self._union_find[first_parent][1]
-        second_rank = self._union_find[second_parent][1]
+        assert vtx_one in self.ids_vtx
+        assert vtx_two in self.ids_vtx
+        parent_one = self.find(vtx_one)
+        parent_two = self.find(vtx_two)
 
-        if first_rank > second_rank:
-            self._union_find[second_parent] = self._union_find[first_parent][0], self._union_find[second_parent][1]
-        elif second_rank > first_rank:
-            self._union_find[first_parent] = self._union_find[second_parent][0], self._union_find[first_parent][1]
-        else:
-            self._union_find[second_parent] = self._union_find[first_parent]
-            self._union_find[first_parent] = (first_parent, self._union_find[first_parent][1] + 1)
+        #union can be only be applied if they don´t have already a connected parent
+        if parent_one != parent_two:
+            # decreas number of items
+            self.number_unions -= 1
+            val_one = self._union_find[parent_one][1]
+            val_two = self._union_find[parent_two][1]
 
-    def _get_parent(self, item):
-        node, node_range = self._union_find[item]
-        return node
-
-
+            if val_one > val_two:
+                self._union_find[parent_two] = (self._union_find[parent_one][0], self._union_find[parent_two][1])
+            elif val_two > val_one:
+                self._union_find[parent_one] = (self._union_find[parent_two][0], self._union_find[parent_one][1])
+            else:
+                self._union_find[parent_two] = self._union_find[parent_one]
+                self._union_find[parent_one] = (parent_one, self._union_find[parent_one][1] + 1)
 
 
 if __name__=="__main__":
-    cluster_finder = ClusterFinder("data/clustering.txt")
-    print(cluster_finder.find_clusters(4))
-    graph = load_file("../data/clustering.txt")
-    kruskal = Kruskal(graph)
-    kruskal.get_mst()
+    graph = Graph()
+    graph.read_from_file("data/clustering.txt")
+    kruskal = KruskalClusterDetector(graph)
+    print(kruskal.get_clusters(4))
