@@ -19,7 +19,7 @@ class UnionFinder:
         :param vtx:
         :return: the parent
         """
-        assert vtx in self.ids_vtx
+        #assert vtx in self.ids_vtx
         parent_vtx = self._union_find[vtx][0]
         previous_vtx = vtx
         while self._union_find[parent_vtx][0] != parent_vtx:
@@ -35,8 +35,8 @@ class UnionFinder:
         :param vtx_two: second vertex
         :return: bool, whether both are connected or  not
         """
-        assert vtx_two in self.ids_vtx
-        assert vtx_one in self.ids_vtx
+        #assert vtx_two in self.ids_vtx
+        #assert vtx_one in self.ids_vtx
         return self.find(vtx_one) == self.find(vtx_two)
 
     def union(self, vtx_one: int, vtx_two: int):
@@ -46,8 +46,8 @@ class UnionFinder:
         :param vtx_two: second vertex
         :return: None
         """
-        assert vtx_one in self.ids_vtx
-        assert vtx_two in self.ids_vtx
+        #assert vtx_one in self.ids_vtx
+        #assert vtx_two in self.ids_vtx
         parent_one = self.find(vtx_one)
         parent_two = self.find(vtx_two)
 

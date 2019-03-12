@@ -47,7 +47,7 @@ class BitGraph:
     def read_from_file(self, path: str):
         assert type(path) == str
         with open(path, "r") as f:
-            lines = f.readlines()[:2000]
+            lines = f.readlines()#[:2001]
         self.size, self.number_bits = [int(val) for val in lines.pop(0).split()]
         id = 1
         for line in lines:
@@ -56,7 +56,7 @@ class BitGraph:
             bits = [int(bit) for bit in bits]
             number = calculate_number_from_bits(bits)
             if number in self.graph:
-                self.graph[number] += [(id, bits)]
+                self.graph[number].append((id, bits))
             else:
                 self.graph[number] = [(id, bits)]
             id += 1
@@ -69,40 +69,42 @@ class BigKruskalClusterDetector:
         self.graph = graph
         self.union_finder = UnionFinder(self.graph.nodes)
 
-    def get_number_clusters(self):
+    def get_number_clusters(self, max_spacing: int = 2):
         distances_all = [2**bit for bit in range(self.graph.number_bits)]
         distances_all += [-dist for dist in distances_all]
         distances_all += [combi[0] + combi[1] for combi in itertools.combinations(distances_all, 2)]
         distances_all += [0]
         # because exercise says there must be max 2 diff bits per cluster (zero, one, towo)
-        unions_zero, unions_one, unions_two = [], [], []
+        unions = {key: [] for key in range(max_spacing+1)}
         for distance in distances_all:
             for vtx in self.graph.graph.keys():
                 if (vtx + distance) in self.graph.graph.keys():
                     for node_from, bits_from in self.graph.graph[vtx]:
                         for node_to, bits_to in self.graph.graph[vtx + distance]:
-                            if self._hamming(bits_from, bits_to) == 0:
-                                unions_zero.append((node_from, node_to))
-                            elif self._hamming(bits_from, bits_to) == 1:
-                                unions_one.append((node_from, node_to))
-                            elif self._hamming(bits_from, bits_to) == 2:
-                                unions_two.append((node_from, node_to))
-        self._make_unions(unions_zero)
-        self._make_unions(unions_one)
-        self._make_unions(unions_two)
+                            hamming = self.hamming_encoding(bits_from, bits_to)
+                            if hamming in unions:
+                                unions[hamming] += [(node_from, node_to)]
+        self.unite_unions(unions)
         return self.union_finder.number_unions
 
-    def _hamming(self, bits_from, bits_to):
+    def hamming_encoding(self, bits_from, bits_to):
         hamming = 0
         for bit_from,  bit_to in zip(bits_from, bits_to):
             if bit_from != bit_to:
                 hamming += 1
         return hamming
 
-    def _make_unions(self, unions: list):
-        for node_from, node_to in unions:
-            if not self.union_finder.connected(node_from, node_to):
-                self.union_finder.union(node_from, node_to)
+    def unite_unions(self, unions: dict):
+        for key in unions:
+            nodes = unions[key]
+            i = 0
+            for node_from, node_to in nodes:
+                if i % 10000 == 0:
+                    print(i)
+                i += 1
+                if not self.union_finder.connected(node_from, node_to):
+                    self.union_finder.union(node_from, node_to)
+
 
 class KruskalClusterDetector:
 
@@ -127,13 +129,17 @@ class KruskalClusterDetector:
 
         return edge[2]
 
+def run_profiling():
+    graph_big = BitGraph()
+    graph_big.read_from_file("data/clustering_big.txt")
+    kruskal_big = BigKruskalClusterDetector(graph_big)
+    print(kruskal_big.get_number_clusters())
+
 
 if __name__=="__main__":
     graph = Graph()
     graph.read_from_file("data/clustering.txt")
     kruskal = KruskalClusterDetector(graph)
     print(kruskal.get_clusters(4))
-    graph_big = BitGraph()
-    graph_big.read_from_file("data/clustering_big.txt")
-    kruskal_big = BigKruskalClusterDetector(graph_big)
-    print(kruskal_big.get_number_clusters())
+    import cProfile
+    cProfile.run("run_profiling()")
