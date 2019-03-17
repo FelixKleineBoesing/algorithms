@@ -10,8 +10,6 @@ class MWIST:
 
     def read_file(self):
         '''
-        load file for counting
-        :param file: path to file
         :return: Nothing
         '''
         with open(self.path) as f:
