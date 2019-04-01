@@ -12,4 +12,4 @@ setup(name='algorithms',
       install_requires=['numpy'],
       include_package_data=True,
       zip_safe=False,
-      ext_modules=[Extension("mul_int", ["algorithms/cpp/MultiplyIntegers.cpp"])])
+      ext_modules=[Extension("algorithms", ["algorithms/c/AllPairShortestPath.c"])])
