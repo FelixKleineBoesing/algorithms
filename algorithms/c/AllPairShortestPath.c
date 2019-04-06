@@ -1,31 +1,15 @@
+#include <stdio.h>
 #include <Python.h>
+#include "calgorithms.h"
 
-// Function 1: A simple 'hello world' function
-static PyObject* helloworld(PyObject* self, PyObject* args)
-{
-    printf("Hello World\n");
-    return Py_None;
-}
+PyObject * add(PyObject *self, PyObject *args) {
+	int num1, num2;
+	char eq[20];
 
-// Our Module's Function Definition struct
-// We require this `NULL` to signal the end of our method
-// definition
-static PyMethodDef myMethods[] = {
-    { "helloworld", helloworld, METH_NOARGS, "Prints Hello World" },
-    { NULL, NULL, 0, NULL }
-};
+	if(!PyArg_ParseTuple(args, "ii", &num1, &num2))
+		return NULL;
 
-// Our Module Definition struct
-static struct PyModuleDef myModule = {
-    PyModuleDef_HEAD_INIT,
-    "myModule",
-    "Test Module",
-    -1,
-    myMethods
-};
+	sprintf(eq, "%d + %d", num1, num2);
 
-// Initializes our module using our above struct
-PyMODINIT_FUNC PyInit_myModule(void)
-{
-    return PyModule_Create(&myModule);
+	return Py_BuildValue("is", num1 + num2, eq);
 }
