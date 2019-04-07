@@ -4,7 +4,6 @@ Repo for Algorithms Specialization on Coursera
 Content
 Algorithms implemented in:
 - Python (WIP!)
-- C++ (embedded in Python) (WIP!)
 
 Algorithms: 
 
