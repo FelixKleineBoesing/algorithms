@@ -1,4 +1,4 @@
-from QuickSort import quick_sort
+from algorithms.QuickSort import quick_sort
 import bisect
 
 def load_file(file: str):
