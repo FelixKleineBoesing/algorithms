@@ -1,26 +1,26 @@
 #include <Python.h>
 #include <numpy/arrayobject.h>
-#include "chi2.h"
+#include "apsp.h"
 
 static char module_docstring[] =
     "This module provides an interface for calculating chi-squared using C.";
-static char chi2_docstring[] =
+static char apsp_docstring[] =
     "Calculate the chi-squared of some data given a model.";
 
-static PyObject *chi2_chi2(PyObject *self, PyObject *args);
+static PyObject *apsp_apsp(PyObject *self, PyObject *args);
 
 static PyMethodDef module_methods[] = {
-    {"chi2", chi2_chi2, METH_VARARGS, chi2_docstring},
+    {"apsp", apsp_apsp, METH_VARARGS, apsp_docstring},
     {NULL, NULL, 0, NULL}
 };
 
-PyMODINIT_FUNC PyInit__chi2(void)
+PyMODINIT_FUNC PyInit__apsp(void)
 {
 
     PyObject *module;
     static struct PyModuleDef moduledef = {
         PyModuleDef_HEAD_INIT,
-        "_chi2",
+        "_apsp",
         module_docstring,
         -1,
         module_methods,
@@ -38,7 +38,7 @@ PyMODINIT_FUNC PyInit__chi2(void)
     return module;
 }
 
-static PyObject *chi2_chi2(PyObject *self, PyObject *args)
+static PyObject *apsp_apsp(PyObject *self, PyObject *args)
 {
     double m, b;
     PyObject *x_obj, *y_obj, *yerr_obj;
@@ -54,7 +54,7 @@ static PyObject *chi2_chi2(PyObject *self, PyObject *args)
     PyObject *yerr_array = PyArray_FROM_OTF(yerr_obj, NPY_DOUBLE,
                                             NPY_IN_ARRAY);
 
-    /* If that didn't work, throw an exception. */
+    /* If that didn't work,s throw an exception. */
     if (x_array == NULL || y_array == NULL || yerr_array == NULL) {
         Py_XDECREF(x_array);
         Py_XDECREF(y_array);

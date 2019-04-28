@@ -1,6 +1,6 @@
-#include "chi2.h"
+#include "apsp.h"
 
-double chi2(double m, double b, double *x, double *y, double *yerr, int N) {
+double apsp(double m, double b, double *x, double *y, double *yerr, int N) {
     int n;
     double result = 0.0, diff;
 
