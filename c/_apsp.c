@@ -3,9 +3,9 @@
 #include "apsp.h"
 
 static char module_docstring[] =
-    "This module provides an interface for calculating chi-squared using C.";
+    "This module provides an interface for calculating all pair shortest path using C.";
 static char apsp_docstring[] =
-    "Calculate the chi-squared of some data given a model.";
+    "Calculate the all pair shortest path of a given distance matrix";
 
 static PyObject *apsp_apsp(PyObject *self, PyObject *args);
 
