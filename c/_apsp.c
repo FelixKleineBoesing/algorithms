@@ -71,7 +71,7 @@ static PyObject *apsp_apsp(PyObject *self, PyObject *args)
     double *yerr = (double*)PyArray_DATA(yerr_array);
 
     /* Call the external C function to compute the chi-squared. */
-    double value = chi2(m, b, x, y, yerr, N);
+    double value = apsp(m, b, x, y, yerr, N);
 
     /* Clean up. */
     Py_DECREF(x_array);
@@ -80,7 +80,7 @@ static PyObject *apsp_apsp(PyObject *self, PyObject *args)
 
     if (value < 0.0) {
         PyErr_SetString(PyExc_RuntimeError,
-                    "Chi-squared returned an impossible value.");
+                    "All-Pair-Shortest-path returned an impossible value.");
         return NULL;
     }
 

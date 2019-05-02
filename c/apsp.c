@@ -12,7 +12,7 @@ double apsp(double m, double b, double *x, double *y, double *yerr, int N) {
     return result;
 };
 
-double apsp(float *arr, int number_vtx) {
+double apsp(float *arr) {
 
     for (i = 0; i < number_vtx; i++) {
         for (j = 0; j < number_vtx; j++) {
@@ -23,5 +23,5 @@ double apsp(float *arr, int number_vtx) {
             }
         }
     }
-    return arr_out
+    return arr
 }
