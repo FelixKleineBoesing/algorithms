@@ -1,1 +1,1 @@
-double apsp(double m, double b, double *x, double *y, double *yerr, int N);
+double** apsp(double **dist);

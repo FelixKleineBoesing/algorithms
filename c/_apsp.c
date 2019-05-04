@@ -40,49 +40,37 @@ PyMODINIT_FUNC PyInit__apsp(void)
 
 static PyObject *apsp_apsp(PyObject *self, PyObject *args)
 {
-    double m, b;
-    PyObject *x_obj, *y_obj, *yerr_obj;
+    PyObject *dist_obj;
 
     /* Parse the input tuple */
-    if (!PyArg_ParseTuple(args, "ddOOO", &m, &b, &x_obj, &y_obj,
-                                        &yerr_obj))
+    if (!PyArg_ParseTuple(args, "O", &dist_obj))
         return NULL;
 
     /* Interpret the input objects as numpy arrays. */
-    PyObject *x_array = PyArray_FROM_OTF(x_obj, NPY_DOUBLE, NPY_IN_ARRAY);
-    PyObject *y_array = PyArray_FROM_OTF(y_obj, NPY_DOUBLE, NPY_IN_ARRAY);
-    PyObject *yerr_array = PyArray_FROM_OTF(yerr_obj, NPY_DOUBLE,
-                                            NPY_IN_ARRAY);
+    PyObject *dist_array = PyArray_FROM_OTF(dist_obj, NPY_DOUBLE, NPY_IN_ARRAY);
 
     /* If that didn't work,s throw an exception. */
-    if (x_array == NULL || y_array == NULL || yerr_array == NULL) {
-        Py_XDECREF(x_array);
-        Py_XDECREF(y_array);
-        Py_XDECREF(yerr_array);
+    if (dist_array == NULL) {
+        Py_XDECREF(dist_array);
         return NULL;
     }
 
-    /* How many data points are there? */
-    int N = (int)PyArray_DIM(x_array, 0);
-
     /* Get pointers to the data as C-types. */
-    double *x    = (double*)PyArray_DATA(x_array);
-    double *y    = (double*)PyArray_DATA(y_array);
-    double *yerr = (double*)PyArray_DATA(yerr_array);
+    double *dist    = (double*)PyArray_DATA(dist_array);
 
     /* Call the external C function to compute the chi-squared. */
-    double value = apsp(m, b, x, y, yerr, N);
+    double *value = apsp(dist);
 
     /* Clean up. */
-    Py_DECREF(x_array);
-    Py_DECREF(y_array);
-    Py_DECREF(yerr_array);
+    Py_DECREF(dist_array);
 
+    /*
     if (value < 0.0) {
         PyErr_SetString(PyExc_RuntimeError,
                     "All-Pair-Shortest-path returned an impossible value.");
         return NULL;
     }
+    */
 
     /* Build the output tuple */
     PyObject *ret = Py_BuildValue("d", value);
