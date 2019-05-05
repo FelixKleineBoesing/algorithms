@@ -41,9 +41,9 @@ PyMODINIT_FUNC PyInit__apsp(void)
 static PyObject *apsp_apsp(PyObject *self, PyObject *args)
 {
     PyObject *dist_obj;
-
+    int n;
     /* Parse the input tuple */
-    if (!PyArg_ParseTuple(args, "O", &dist_obj))
+    if (!PyArg_ParseTuple(args, "Oi", &dist_obj, &n))
         return NULL;
 
     /* Interpret the input objects as numpy arrays. */
@@ -59,7 +59,7 @@ static PyObject *apsp_apsp(PyObject *self, PyObject *args)
     double *dist    = (double*)PyArray_DATA(dist_array);
 
     /* Call the external C function to compute the chi-squared. */
-    double *value = apsp(dist);
+    double *value = apsp(dist, n);
 
     /* Clean up. */
     Py_DECREF(dist_array);
