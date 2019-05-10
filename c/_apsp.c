@@ -64,14 +64,6 @@ static PyObject *apsp_apsp(PyObject *self, PyObject *args)
     /* Clean up. */
     Py_DECREF(dist_array);
 
-    /*
-    if (value < 0.0) {
-        PyErr_SetString(PyExc_RuntimeError,
-                    "All-Pair-Shortest-path returned an impossible value.");
-        return NULL;
-    }
-    */
-
     /* Build the output tuple */
     PyObject *ret = Py_BuildValue("d", value);
     return ret;
