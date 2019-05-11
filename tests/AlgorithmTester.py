@@ -18,7 +18,7 @@ def test_c_apsp():
         distance_matrix[i, i] = 0
     dist = distance_matrix
     print(dist)
-    new_dist = apsp(dist, 3)
+    new_dist = apsp(dist, dist.shape[0])
     print(dist)
     print(new_dist)
 
