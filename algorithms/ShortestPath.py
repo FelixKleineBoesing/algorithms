@@ -1,5 +1,5 @@
 import numpy as np
-
+from algorithms._apsp import apsp
 
 class FloydWarshall:
 
@@ -28,8 +28,18 @@ class FloydWarshall:
         else:
             print(np.amin(self.dist))
 
+    def find_shortest_paths_c(self):
+        apsp(self.dist, self.dist.shape[0])
+
+        if np.any(np.diagonal(self.dist) < 0):
+            print(np.amin(self.dist))
+            print("negative cost cycle")
+        else:
+            print(np.amin(self.dist))
+
+
 
 if __name__ == "__main__":
-    FloydWarshall("data/g1.txt").find_shortest_paths()
-    FloydWarshall("data/g2.txt").find_shortest_paths()
-    FloydWarshall("data/g3.txt").find_shortest_paths()
+    FloydWarshall("../data/g1.txt").find_shortest_paths_c()
+    FloydWarshall("../data/g2.txt").find_shortest_paths_c()
+    FloydWarshall("../data/g3.txt").find_shortest_paths_c()
