@@ -48,6 +48,7 @@ class FloydWarshall:
         else:
             print(np.amin(self.dist))
 
+
 if __name__ == "__main__":
     g1 = build_dist_matrix_from_file("../data/g1.txt")
     g2 = build_dist_matrix_from_file("../data/g2.txt")

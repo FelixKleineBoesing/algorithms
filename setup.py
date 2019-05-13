@@ -12,6 +12,6 @@ setup(name='algorithms',
       install_requires=['numpy'],
       include_package_data=True,
       zip_safe=False,
-      ext_modules=[Extension("algorithms/_apsp", ["c/_apsp.c", "c/apsp.c"])],
+      ext_modules=[Extension("algorithms/_apsp", ["c/apsp/_apsp.c", "c/apsp/apsp.c"])],
       include_dirs=numpy.distutils.misc_util.get_numpy_include_dirs(),
       )

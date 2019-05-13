@@ -6,6 +6,7 @@ class MWIST:
     def __init__(self, path: str):
         self.path = path
         self.data = None
+        self.maximum_weight_graph = None
         self.read_file()
 
     def read_file(self):
@@ -32,6 +33,7 @@ class MWIST:
                 position = position - 2
         self.maximum_weight_graph = maximum_weight_graph
         return maximum_weight_graph
+
 
 if __name__=="__main__":
     assigment_vertices = [1, 2, 3, 4, 17, 117, 517, 997]
