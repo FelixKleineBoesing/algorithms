@@ -1,6 +1,7 @@
 import numpy as np
 from algorithms._apsp import apsp
 
+
 class FloydWarshall:
 
     def __init__(self, path: str):
