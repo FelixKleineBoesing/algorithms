@@ -37,7 +37,7 @@ class MWIST:
 
 if __name__=="__main__":
     assigment_vertices = [1, 2, 3, 4, 17, 117, 517, 997]
-    mwis = MWIST("data/mwis.txt")
+    mwis = MWIST("../data/mwis.txt")
     mwis_graph = mwis.find_maximum_weight_graph()
     vertix_check = [str(int(vtx in mwis_graph)) for vtx in assigment_vertices]
     print("".join(vertix_check))

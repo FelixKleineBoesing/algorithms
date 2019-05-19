@@ -1,26 +1,26 @@
 #include <Python.h>
 #include <numpy/arrayobject.h>
-#include "apsp.h"
+#include "mergesort.h"
 
 static char module_docstring[] =
     "This module provides an interface for calculating all pair shortest path using C.";
-static char apsp_docstring[] =
+static char mergesort_docstring[] =
     "Calculate the all pair shortest path of a given distance matrix";
 
-static PyObject *apsp_apsp(PyObject *self, PyObject *args);
+static PyObject *mergesort_mergesort(PyObject *self, PyObject *args);
 
 static PyMethodDef module_methods[] = {
-    {"apsp", apsp_apsp, METH_VARARGS, apsp_docstring},
+    {"apsp", mergesort_mergesort, METH_VARARGS, mergesort_docstring},
     {NULL, NULL, 0, NULL}
 };
 
-PyMODINIT_FUNC PyInit__apsp(void)
+PyMODINIT_FUNC PyInit__mergesort(void)
 {
 
     PyObject *module;
     static struct PyModuleDef moduledef = {
         PyModuleDef_HEAD_INIT,
-        "_apsp",
+        "_mergesort",
         module_docstring,
         -1,
         module_methods,
@@ -38,7 +38,7 @@ PyMODINIT_FUNC PyInit__apsp(void)
     return module;
 }
 
-static PyObject *apsp_apsp(PyObject *self, PyObject *args)
+static PyObject *mergesort_mergesort(PyObject *self, PyObject *args)
 {
     PyObject *dist_obj;
     int n;

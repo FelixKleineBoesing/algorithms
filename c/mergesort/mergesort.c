@@ -1,7 +1,7 @@
-#include "apsp.h"
+#include "mergesort.h"
 #include <stdio.h>
 
-double* apsp(double *dist, int n) {
+double* mergesort(double *list) {
 
     char str[12];
 
